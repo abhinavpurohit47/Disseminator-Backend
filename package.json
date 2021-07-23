@@ -1,7 +1,10 @@
 {
-  "name": "Disseminator_backend",
+  "name": "disseminator_backend",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev server.ts"
+  },
   "license": "MIT",
   "dependencies": {
     "cloudinary": "^1.26.2",
