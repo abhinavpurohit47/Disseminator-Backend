@@ -2,12 +2,13 @@ import express from 'express';
 import multer  from 'multer';
 import {UploadApiResponse, v2 as cloudinary} from'cloudinary';
 import File from '../models/File';
+import https from 'https';
 
 const router = express.Router();
 const storage = multer.diskStorage({})
 
 let upload = multer ({
-    storage
+    storage,
 }) 
 router.post("/upload", upload.single("myFile"),async(req,res) => {
     try{
@@ -21,8 +22,9 @@ router.post("/upload", upload.single("myFile"),async(req,res) => {
                         resource_type: "auto"
                     });
             }
-            catch (error){
+            catch (error:any){
                         console.log(error.message);
+
                         return res.status(400).json({ message: "Cloudinary Error"});
             }
 
@@ -33,17 +35,53 @@ router.post("/upload", upload.single("myFile"),async(req,res) => {
                     filename:originalname,
                     sizeInBytes:bytes,
                     secure_url,
-                    format
+                    format,
                 });
                 res.status(200).json({
                 id:file._id,
                 downloadPageLink : `${process.env.API_BASE_ENDPOINT_CLIENT}download/${file._id}`,
                 })
             }
-    catch (error){
+    catch (error:any){
         console.log(error.message);
         res.status(500).json({ message: "Server Error !!"});
     }
 })
 
-export default router
+router.get("/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const file = await File.findById(id);
+      if (!file) {
+        return res.status(404).json({ message: "File does not exist" });
+      }
+  
+      const { filename, format, sizeInBytes } = file;
+      return res.status(200).json({
+        name: filename,
+        sizeInBytes,
+        format,
+        id,
+      });
+    } catch (error) {
+      return res.status(500).json({ message: "Server Error :(" });
+    }
+  });
+  
+
+
+router.get("/:id/download",async(req,res) => {
+    try {
+        const id = req.params.id;
+        const file = await File.findById(id);
+        if (!file) {
+          return res.status(404).json({ message: "File does not exist" });
+        }
+    
+        https.get(file.secure_url, (fileStream) => fileStream.pipe(res));
+      } catch (error) {
+        return res.status(500).json({ message: "Server Error" });
+      }
+    });
+
+export default router;
