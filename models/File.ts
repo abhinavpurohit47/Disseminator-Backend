@@ -36,7 +36,7 @@ interface IFile extends Document {
     sizeInBytes:string;
     format:string;
     sender?:string;
-    reciever?:string;
+    receiver?:string;
 }
 
 export default mongoose.model<IFile>("File", fileSchema)
