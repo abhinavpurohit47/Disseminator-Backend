@@ -15,7 +15,7 @@ let upload = multer ({
 router.post("/upload", upload.single("myFile"),async(req,res) => {
     try{
         if(!req.file)
-        return res.status(400).json({message: "Hey! Upload the file"})
+        return res.status(400).json({message: "Hey!  Upload the file"})
         console.log(req.file);
         let uploadedFile : UploadApiResponse;
             try{
