@@ -31,12 +31,13 @@ router.post("/upload", upload.single("myFile"),async(req,res) => {
             }
 
                 const {originalname} = req.file
-                const {secure_url, bytes } = uploadedFile;
+                const {secure_url, bytes, format } = uploadedFile;
 
                 const file = await File.create({
                     filename:originalname,
                     sizeInBytes:bytes,
                     secure_url,
+                    format,
                 });
                 res.status(200).json({
                 id:file._id,
@@ -61,6 +62,7 @@ router.get("/:id", async (req, res) => {
       return res.status(200).json({
         name: filename,
         sizeInBytes,
+        format,
         id,
       });
     } catch (error) {
