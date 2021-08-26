@@ -17,6 +17,7 @@ router.post("/upload", upload.single("myFile"),async(req,res) => {
         if(!req.file)
         return res.status(400).json({message: "Hey!  Upload the file"})
         console.log(req.file);
+        console.log(req.file.mimetype.split("/")[req.file.mimetype.split("/").length-1])
         let uploadedFile : UploadApiResponse;
             try{
               uploadedFile = await cloudinary.uploader.upload(req.file.path , {
@@ -27,7 +28,7 @@ router.post("/upload", upload.single("myFile"),async(req,res) => {
                     });
             }
             catch (error:any){
-                        console.log(error.message);
+                        console.log(error);
                         return res.status(400).json({ message: "Cloudinary Error"});
             }
 
