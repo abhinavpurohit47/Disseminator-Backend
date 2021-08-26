@@ -15,7 +15,7 @@ cloudinary_1.v2.config({
     cloud_name: process.env.CLOUDINARY_API_CLOUD,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
-    // api_env_var:process.env.CLOUDINARY_API_ENV_VAR
+    api_env_var: process.env.CLOUDINARY_API_ENV_VAR
 });
 db_1.default();
 app.use(cors_1.default());
