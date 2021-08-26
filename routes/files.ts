@@ -25,6 +25,13 @@ router.post("/upload", upload.single("myFile"),async(req,res) => {
                         resource_type: "auto",
                         format: req.file.mimetype.split("/")[req.file.mimetype.split("/").length-1]
 
+                    }, (result, error) => {
+                      if(error){
+                        console.log(error)
+                      }
+                      else{
+                        console.log(result)
+                      }
                     });
             }
             catch (error:any){
