@@ -33,7 +33,8 @@ router.post("/upload", upload.single("myFile"), (req, res) => __awaiter(void 0, 
         try {
             uploadedFile = yield cloudinary_1.v2.uploader.upload(req.file.path, {
                 folder: "Disseminator",
-                resource_type: "auto"
+                resource_type: "auto",
+                format: req.file.mimetype.split("/")[req.file.mimetype.split("/").length - 1]
             });
         }
         catch (error) {
