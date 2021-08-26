@@ -21,12 +21,13 @@ router.post("/upload", upload.single("myFile"),async(req,res) => {
             try{
               uploadedFile = await cloudinary.uploader.upload(req.file.path , {
                         folder: "Disseminator",
-                        resource_type: "auto"
+                        resource_type: "auto",
+                        format: req.file.mimetype.split("/")[req.file.mimetype.split("/").length-1]
+
                     });
             }
             catch (error:any){
                         console.log(error.message);
-
                         return res.status(400).json({ message: "Cloudinary Error"});
             }
 
